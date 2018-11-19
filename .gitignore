@@ -1,4 +1,5 @@
 .env
 .data
 .idea
-www/app/
+www/app/*
+!www/app/.gitkeep
