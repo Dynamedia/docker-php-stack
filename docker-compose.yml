@@ -1,0 +1,53 @@
+version: "3.4"
+services:
+  nginx:
+    build: ./nginx
+    env_file:
+      - .env
+    restart: unless-stopped
+    volumes:
+      - ./www/:/var/www
+      - ./.data/logs/nginx:/var/log/nginx
+    networks:
+      - backend
+      - reverse-proxy
+
+  php-fpm:
+    build: ./php-fpm
+    env_file:
+    - .env
+    restart: unless-stopped
+    volumes:
+    - ./www/:/var/www
+    networks:
+      - backend
+
+  mysql:
+    build: ./mysql
+    env_file:
+    - .env
+    restart: unless-stopped
+    ports:
+      - 127.0.0.1:3306:3306
+    volumes:
+      - ./.data/mysql:/var/lib/mysql
+    networks:
+      - backend
+
+  redis:
+    build: ./redis
+    env_file:
+    - .env
+    restart: unless-stopped
+    volumes:
+      - ./.data/redis:/data
+    networks:
+      - backend
+
+
+networks:
+  reverse-proxy:
+    external:
+      name: reverse-proxy
+  backend:
+    driver: bridge

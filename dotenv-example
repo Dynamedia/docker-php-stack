@@ -1,0 +1,38 @@
+# For the reverse proxy
+
+VIRTUAL_HOST=myapp.local
+VIRTUAL_PORT=3000
+
+# Details for the user who will own the files - for php & nginx.env
+
+USER_NAME=www-data
+USER_GROUP=www-data
+USER_UID=1000
+USER_GID=1000
+
+# Nginx
+
+NGINX_WORKER_PROCESSES=1
+
+# Php
+
+TIMEZONE=Europe/London
+PHP_MEMORY_LIMIT=128M
+FPM_MODE=dynamic
+FPM_START_SERVERS=1
+FPM_MAX_CHILDREN=5
+FPM_MIN_SPARE_SERVERS=1
+FPM_MAX_SPARE_SERVERS=4
+FPM_MAX_REQUESTS=500
+
+# Redis
+
+REDIS_MAXMEMORY=128M
+REDIS_MAXMEMORY_POLICY=allkeys-lfu
+
+# Mysql
+
+MYSQL_ROOT_PASSWORD=password
+MYSQL_DATABASE=myapp
+MYSQL_USER=myapp
+MYSQL_PASSWORD=password
