@@ -1,7 +1,9 @@
 # For the reverse proxy
 
 VIRTUAL_HOST=myapp.local
-VIRTUAL_PORT=3000
+#LETSENCRYPT_HOST=myapp.example.org
+#LETSENCRYPT_EMAIL=admin@myapp.example.org
+
 
 # Details for the user who will own the files - for php & nginx.env
 
