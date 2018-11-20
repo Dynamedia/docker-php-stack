@@ -30,9 +30,12 @@ FPM_MAX_REQUESTS=500
 REDIS_MAXMEMORY=128M
 REDIS_MAXMEMORY_POLICY=allkeys-lfu
 
-# Mysql
+# Mysql - These are cleared by entrypoint.sh on startup (for non mysql services) but it would be better to use docker secrets
 
 MYSQL_ROOT_PASSWORD=password
 MYSQL_DATABASE=myapp
 MYSQL_USER=myapp
 MYSQL_PASSWORD=password
+
+# The port to bind on localhost for mysql
+MYSQL_HOST_PORT=3306
