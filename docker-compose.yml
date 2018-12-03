@@ -1,41 +1,38 @@
 version: "3.4"
 services:
   nginx:
-    build: ./nginx
+    image: dynamedia/docker-nginx:latest
     env_file:
       - .env
     restart: unless-stopped
+    depends_on:
+      - php-fpm
     volumes:
       - ./www/:/var/www
       - ./.data/logs/nginx:/var/log/nginx
+      - ./nginx/sites-enabled/conf.d/expires.conf:/etc/nginx/sites-enabled/conf.d/expires.conf
+      - ./nginx/sites-enabled/conf.d/octobercms.conf:/etc/nginx/sites-enabled/conf.d/octobercms.conf
     networks:
       - backend
       - reverse-proxy
+    expose:
+      - 80
 
   php-fpm:
-    build: ./php-fpm
+    image: dynamedia/docker-php-fpm:latest
     env_file:
     - .env
     restart: unless-stopped
+    depends_on:
+      - mysql
+      - redis
     volumes:
     - ./www/:/var/www
     networks:
       - backend
 
-  mysql:
-    build: ./mysql
-    env_file:
-    - .env
-    restart: unless-stopped
-    ports:
-      - 127.0.0.1:${MYSQL_HOST_PORT:-3306}:3306
-    volumes:
-      - ./.data/mysql:/var/lib/mysql
-    networks:
-      - backend
-
   redis:
-    build: ./redis
+    image: dynamedia/docker-redis:latest
     env_file:
     - .env
     restart: unless-stopped
@@ -44,6 +41,18 @@ services:
     networks:
       - backend
 
+  mysql:
+    image: mysql:8
+    env_file:
+    - .env
+    restart: unless-stopped
+    ports:
+    - 127.0.0.1:${MYSQL_HOST_PORT:-3306}:3306
+    volumes:
+    - ./.data/mysql:/var/lib/mysql
+    - ./mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+    networks:
+    - backend
 
 networks:
   reverse-proxy:
